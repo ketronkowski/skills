@@ -293,6 +293,35 @@ January 14, 2026, 9:00PM
 
 **Script**: `clean_transcript_docx.py` (new - for .docx converted format)
 
+#### Format 4: Simple First Name Markers (No Timestamps)
+**Source**: Simple transcript format with basic speaker markers
+
+**Characteristics**:
+- Speaker markers on own line: `[FirstName]`
+- No timestamps
+- Content on following lines until next speaker marker
+- May have unknown speakers like `[Speaker 3]` to skip
+- Blank lines between speakers
+
+**Example:**
+```markdown
+## Transcript
+
+[Kashish]  
+Am I supposed to show it, but? Clearly, I am showing it.
+
+[Stella]  
+Somewhere. There is a gap.
+
+[Speaker 3]  
+Can you see it,
+
+[Kevin]  
+Yeah, yeah, yeah, you're exactly right.
+```
+
+**Script**: `clean_transcript_simple.py` (new - for simple first-name format)
+
 ### When to Use
 
 - User requests "clean up transcript", "process transcript", or "format transcript"
@@ -312,13 +341,17 @@ python ~/.copilot/skills/obsidian-meeting/scripts/clean_transcript_downloaded.py
 
 # For Format 3 (.docx converted to text)
 python ~/.copilot/skills/obsidian-meeting/scripts/clean_transcript_docx.py "meeting-file.md"
+
+# For Format 4 (simple first-name markers)
+python ~/.copilot/skills/obsidian-meeting/scripts/clean_transcript_simple.py "meeting-file.md"
 ```
 
 **Detection logic:**
-1. Check for pattern `**Last, First**   timestamp` → Format 2 (downloaded with markdown bold)
-2. Check for pattern ` Last, First   timestamp content` (leading space, no bold) → Format 3 (.docx converted)
-3. Check for pattern `Last, First` on own line + timestamp on next line → Format 1 (direct paste)
-4. If unsure, try Format 2 first, then Format 3, then Format 1
+1. Check for pattern `[FirstName]` on own line (no timestamp following) → Format 4 (simple markers)
+2. Check for pattern `**Last, First**   timestamp` → Format 2 (downloaded with markdown bold)
+3. Check for pattern ` Last, First   timestamp content` (leading space, no bold) → Format 3 (.docx converted)
+4. Check for pattern `Last, First` on own line + timestamp on next line → Format 1 (direct paste)
+5. If unsure, try Format 2 first, then Format 3, then Format 4, then Format 1
 
 The script automatically:
 1. Extracts the transcript section

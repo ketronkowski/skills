@@ -4,13 +4,14 @@ Utility scripts for processing Obsidian meeting notes.
 
 ## Overview
 
-Three scripts handle different Microsoft Teams transcript formats:
+Four scripts handle different Microsoft Teams transcript formats:
 
 | Script | Format | Source |
 |--------|--------|--------|
 | `clean_transcript.py` | Direct paste from Teams | Copy-paste from Teams UI |
 | `clean_transcript_downloaded.py` | Downloaded/exported | Downloaded VTT or exported file |
 | `clean_transcript_docx.py` | Plain text from .docx | .docx export converted to text |
+| `clean_transcript_simple.py` | Simple first-name markers | Basic transcript with [Name] format |
 
 ## clean_transcript.py
 
@@ -198,6 +199,70 @@ python clean_transcript_docx.py ~/Documents/Obsidian/HPE/Meetings/2026-01-14\ -\
   ... and 169 more
 ```
 
+## clean_transcript_simple.py
+
+Cleans **simple first-name marker** format with no timestamps.
+
+**Usage:**
+```bash
+python clean_transcript_simple.py <meeting_file.md>
+```
+
+**Input format characteristics:**
+- Speaker markers on separate line: `[FirstName]`
+- No timestamps
+- Content follows on next lines until next speaker
+- May have unknown speakers like `[Speaker 3]` to skip
+- Blank lines between speakers
+
+**Example input:**
+```markdown
+## Transcript
+
+[Kashish]  
+Am I supposed to show it, but? Clearly, I am showing it.
+
+[Stella]  
+Somewhere. There is a gap.
+
+[Speaker 3]  
+Can you see it,
+
+[Kevin]  
+Yeah, yeah, yeah, you're exactly right.
+```
+
+**What it does:**
+- Extracts attendee names from meeting file to build first name mapping
+- Parses simple [Name] markers
+- Skips unknown speakers (e.g., "Speaker 3")
+- Maps first names to full names from attendee list
+- Formats speakers as linked names (no timestamps)
+- Joins multi-line content into single paragraphs
+- Replaces transcript section in original file
+- Creates backup (.bak) before modifying
+
+**Requirements:**
+- Meeting file must have an `## Attendees` section with linked profiles
+- Meeting file must have a `## Transcript` section
+- Python 3.6+
+
+**Example:**
+```bash
+python clean_transcript_simple.py ~/Documents/Obsidian/HPE/Meetings/2026-01-23\ -\ Meeting.md
+```
+
+**Output:**
+```
+✓ Created backup: /path/to/Meeting.md.bak
+✓ Cleaned 158 transcript entries
+  - Stella Yun: 49 entries
+  - Kashish Pahwa: 48 entries
+  - Shaji Mohammed: 39 entries
+  - Kevin Tronkowski: 22 entries
+✓ Updated /path/to/Meeting.md
+```
+
 ## Format Detection
 
 When processing a meeting, detect which format to use:
@@ -207,6 +272,10 @@ import re
 
 def detect_transcript_format(transcript_text):
     """Detect which Teams transcript format is present."""
+    
+    # Check for simple first-name format: [Name]
+    if re.search(r'^\[([A-Z][a-z]+)\]\s*$', transcript_text, re.MULTILINE):
+        return 'simple'
     
     # Check for downloaded format: **Name**   timestamp
     if re.search(r'\*\*[A-Za-z]+, [A-Za-z]+\*\*\s+\d{1,2}:\d{2}', transcript_text):
@@ -225,13 +294,14 @@ def detect_transcript_format(transcript_text):
 ```
 
 **Best practice**: Try formats in order:
-1. Downloaded format (most structured)
-2. .docx converted format (plain text)
-3. Direct paste format (fallback)
+1. Simple format (most basic, [Name] markers)
+2. Downloaded format (most structured with timestamps)
+3. .docx converted format (plain text)
+4. Direct paste format (fallback)
 
-## Output Format (Both Scripts)
+## Output Format (All Scripts)
 
-Both scripts produce identical output format:
+All scripts produce identical output format:
 
 ```markdown
 ## Transcript
@@ -243,6 +313,20 @@ Content paragraph 1.
 Content paragraph 2.
 
 **[[Last, First|First Last]]** timestamp
+
+More content.
+```
+
+**Note**: The simple format script omits timestamps since the source format has none:
+
+```markdown
+## Transcript
+
+**[[Last, First|First Last]]**
+
+Content paragraph.
+
+**[[Last, First|First Last]]**
 
 More content.
 ```
