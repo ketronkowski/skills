@@ -81,8 +81,15 @@ Invoke this skill when the user asks questions about:
   - `Note.md` - Generic note template
 
 #### `/Notes/`
-- **Purpose**: General project notes and documentation
+- **Purpose**: General project notes, standalone documentation, schedules, and reference material
 - **Usage**: Standalone notes not tied to meetings or daily entries
+- **Contains**:
+  - Project documentation
+  - Release schedules (e.g., PTP/P2P schedules)
+  - Reference material
+  - Email chains and correspondence
+  - Technical notes and guides
+- **IMPORTANT**: Always search this directory when looking for information - it contains critical material not found in Meetings or Daily Notes
 
 #### `/Clippings/`
 - **Purpose**: Web clippings and saved articles
@@ -219,7 +226,12 @@ WHERE when=date(this.file.name) AND contains(tags, "note")
    grep -ri "[topic]" /Users/kevin/Documents/Obsidian/HPE/Meetings/ --include="*.md"
    ```
 3. **Search Daily Notes**: May contain brief mentions
-4. **Check Notes directory**: Standalone documentation
+4. **ALWAYS Check Notes directory**: Standalone documentation, schedules, and reference material
+   ```bash
+   grep -ri "[topic]" /Users/kevin/Documents/Obsidian/HPE/Notes/ --include="*.md"
+   ```
+
+**IMPORTANT**: When searching for information in the Obsidian vault, ALWAYS include the `/Notes/` directory in your search. This directory contains critical standalone documentation, schedules (like PTP/P2P release schedules), and reference material that may not be found in Meetings or Daily Notes.
 
 ### Finding Decisions
 1. **Search for "decide"/"decided"** in Meetings:
@@ -228,6 +240,10 @@ WHERE when=date(this.file.name) AND contains(tags, "note")
    ```
 2. **Check "Take Aways" sections**: Meeting notes have Take Aways section
 3. **Check "Actions" sections**: Action items from meetings
+4. **Search Notes directory**: May contain decision documentation:
+   ```bash
+   grep -ri "decide" /Users/kevin/Documents/Obsidian/HPE/Notes/ --include="*.md"
+   ```
 
 ## Quick Reference Commands
 
@@ -247,6 +263,9 @@ grep -ri "juniper" /Users/kevin/Documents/Obsidian/HPE/Meetings/ --include="*.md
 
 # Find topic in SIC notes
 grep -ri "horizontal.*scaler" /Users/kevin/Documents/Obsidian/HPE/SIC/ --include="*.md"
+
+# ALWAYS search Notes directory too
+grep -ri "[topic]" /Users/kevin/Documents/Obsidian/HPE/Notes/ --include="*.md"
 ```
 
 ### Search by Date Range
@@ -275,8 +294,9 @@ ls -t /Users/kevin/Documents/Obsidian/HPE/Meetings/ | head -20
 ### Answer "What did we discuss/decide about [Topic]?"
 1. Search Meetings directory for topic keyword
 2. Search SIC directory if topic is SIC-related
-3. Look in relevant sections: Subject, Notes, Take Aways, Actions
-4. Check Daily Notes for brief mentions
+3. **ALWAYS search Notes directory** for standalone documentation and reference material
+4. Look in relevant sections: Subject, Notes, Take Aways, Actions
+5. Check Daily Notes for brief mentions
 
 ### Create New Meeting Note
 1. Use format: `YYYY-MM-DD - [Meeting Name].md`
@@ -310,11 +330,12 @@ ls -t /Users/kevin/Documents/Obsidian/HPE/Meetings/ | head -20
 
 1. **Always check exact directories first** - Don't search randomly
 2. **Use grep with specific paths** - More efficient than broad searches
-3. **Look for wiki link patterns** - `[[Name]]` for finding references
-4. **Check both Meetings and Daily Notes** - Information may be in either
-5. **Use date-based sorting** - Files are date-prefixed for easy sorting
-6. **Check People profiles for context** - May have role/project information
-7. **Search multiple forms of names** - "Kashish", "Pahwa", "Pahwa, Kashish"
+3. **ALWAYS include the Notes directory in searches** - Contains schedules, documentation, and reference material not found elsewhere
+4. **Look for wiki link patterns** - `[[Name]]` for finding references
+5. **Check Meetings, Daily Notes, AND Notes directories** - Information may be in any of these
+6. **Use date-based sorting** - Files are date-prefixed for easy sorting
+7. **Check People profiles for context** - May have role/project information
+8. **Search multiple forms of names** - "Kashish", "Pahwa", "Pahwa, Kashish"
 
 ## Example Queries and Responses
 
@@ -334,8 +355,9 @@ ls -t /Users/kevin/Documents/Obsidian/HPE/Meetings/ | head -20
 **Strategy**:
 1. Search SIC directory: `grep -ri "horizontal.*scaler" /Users/kevin/Documents/Obsidian/HPE/SIC/ --include="*.md"`
 2. Search Meetings: `grep -ri "horizontal.*scaler" /Users/kevin/Documents/Obsidian/HPE/Meetings/ --include="*.md"`
-3. Look for "decide" or "decision" near mentions
-4. Check Take Aways and Actions sections
+3. Search Notes directory: `grep -ri "horizontal.*scaler" /Users/kevin/Documents/Obsidian/HPE/Notes/ --include="*.md"`
+4. Look for "decide" or "decision" near mentions
+5. Check Take Aways and Actions sections
 
 ## File Locations Quick Reference
 
