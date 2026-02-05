@@ -302,7 +302,140 @@ Both formats are correctly parsed:
   - Chen, Michael (michael.chen@hpe.com)
 ```
 
-## Example 6: Adding Email to Existing Profile
+## Example 7: Automatic Detailed AI Summary (DEFAULT BEHAVIOR)
+
+### Processing Email - Automatic Detailed Analysis
+
+When you process an email, the script **automatically generates a comprehensive detailed summary**:
+
+```bash
+python process_email.py "2026-01-23 - DGTS Email.md"
+```
+
+**Output:**
+```
+✓ Extracted 15 unique participants
+✓ Updated 2 profiles with email addresses
+✓ Updated Participants section
+⏳ Generating detailed AI summary (this may take 30-60 seconds)...
+✓ Generated detailed AI summary
+✓ Updated email note
+```
+
+**Automatically Generated Detailed Summary:**
+```markdown
+# Summary
+
+## Overview
+This email thread discusses critical issues with the Sustainability Insight Center (SIC) setup for DGTS (Deloitte) customer that have been ongoing for approximately 5 months. The thread involves escalated communication between HPE Engineering (OpsRamp team), SIC team, Customer Success, and leadership regarding data integration problems.
+
+**Timeline:** January 15-23, 2026 (peak escalation), with issues dating back ~5 months  
+**Key Meeting:** January 23, 2026 at 12:00 PM (noon)  
+**Customer:** DGTS (Deloitte)
+
+## Technical Issues Identified
+
+Bhanu Vanteru provided detailed analysis of **2 distinct root cause issues** affecting **4 GLCP Jira tickets**:
+
+### Customer Environment
+- **Server:** One DL385 Gen11 server (Serial# 3M1D1J13N0) monitored via Redfish integration
+- **Components:** Contains two power supplies (Serial# 5XLNR0LLLJIKC9 and 5XLNR0LLLJIKFL)
+
+### Issue #1: Power Supply Data Misrepresentation
+**Problem:** OpsRamp is sending SIC data with power supply serial numbers, causing them to appear as separate devices instead of components within the server.
+
+**Solution Required:**
+- Send parent resource information in the data feed to SIC
+- Requires changes on both OpsRamp AND SIC sides
+
+### Issue #2: Computer System Chassis - Missing Data (CRITICAL BUG)
+**Problem:** OpsRamp is sending SIC data for Computer System Chassis with device type UNKNOWN and NO serial number.
+
+**Root Cause:** Missing resource type definition in Redfish integration  
+**Fix Plan:** Planned for SH/CON 3.3 release (priority item)
+
+### Affected GLCP Tickets
+
+| Ticket | Summary | Status | Environment |
+|--------|---------|--------|-------------|
+| [[GLCP-271413]] | Redfish Integration doesn't send data properly | Reopened | Production |
+| [[GLCP-280098]] | OpsRamp data not reflected in SIC | Reopened | Production |
+| [[GLCP-293364]] | OpsRamp Redfish issue in Aquila | New | Aquila |
+| [[GLCP-323815]] | Duplicate Chassis entry without serial# | Assigned | Aquila |
+
+## Process & Escalation Issues
+
+### Communication Breakdown
+- **No PI tickets** found despite 5-month customer issue
+- Issue discovered during **routine ticket review**, not escalation
+- Engineering was unaware of customer pain
+
+## Action Items & Responsibilities
+
+### Immediate Actions (Due: Jan 23, 2026 by Noon)
+- [x] **Stella Yun & Bhanu Vanteru:** Sync on next steps
+- [x] **Bhanu:** Provide ETA for Chassis bug fix
+- [ ] **Binu/Nithin:** Audit support process breakdown
+
+### Short-Term Actions
+- [ ] **Bhanu:** Schedule call with SIC team
+- [ ] **Engineering:** Implement fixes in SH/CON 3.3
+
+## Key Stakeholders
+
+### Engineering Leadership
+- **Suresh Vobbilisetty:** Leading escalation
+- **Bhanu Vanteru:** Engineering lead providing analysis
+- **Latha Vishnubhotla:** Executive sponsor
+
+### Customer Success
+- **Jennifer Evanko:** Escalating customer frustration ("5 full months")
+- **David Cagin:** Hands-on configuration work
+```
+
+### AI Summary Features
+
+The AI-powered summary extracts:
+- ✅ **Specific technical details** (serial numbers, models, configurations)
+- ✅ **Root cause analysis** for each issue
+- ✅ **Affected tickets in tables** for easy scanning
+- ✅ **Stakeholder roles and responsibilities**
+- ✅ **Action items with owners and deadlines**
+- ✅ **Timeline of events**
+- ✅ **Process breakdowns** identified
+- ✅ **Customer impact** and urgency
+
+### Fallback Mode
+
+If AI is unavailable (no API keys configured), generates enhanced basic summary:
+```markdown
+# Summary
+
+## Overview
+Email thread regarding: Re: DGTS Sustainability Insight Center set up
+
+**Customer/Project:** DGTS  
+**Status:** HIGH PRIORITY, Imminent meeting scheduled
+
+## Key Points
+- Discussion involves multiple stakeholders across teams
+
+**Referenced Tickets:**
+- [[GLCP-322691]]
+- [[GLCP-323815]]
+- [[GLCP-271413]]
+
+**Key Dates Mentioned:** Friday, January 23, 2026, January 16, 2026
+
+## Action Items
+- Review email chain for specific action items and deadlines
+- Note: Run this script again to attempt AI-generated detailed summary
+
+---
+*Note: This is a basic summary. For detailed analysis, ensure AI capabilities are configured.*
+```
+
+## Example 8: Adding Email to Existing Profile
 
 If profile already exists but without email:
 

@@ -118,40 +118,70 @@ Replace empty `# Participants` section with linked list:
 - Listed in order of first appearance in email chain
 - One participant per line with bullet point
 
-### Step 4: Generate Email Chain Summary
+### Step 4: Generate Detailed AI Summary (Automatic)
 
-Analyze the email thread and generate a structured summary:
+The script **automatically generates comprehensive, detailed summaries** using AI analysis:
 
-1. Read the entire email chain content
-2. Identify key topics, issues, action items, and decisions
-3. Generate structured summary with sections:
-   - **Overview**: Brief description of the email thread topic
-   - **Key Issues**: Main problems or concerns discussed
-   - **Action Items**: Tasks assigned or next steps identified
-   - **Timeline**: Important dates or deadlines mentioned
-   - **Participants' Perspectives**: Key points from different senders (optional)
+**Detailed AI Summary includes:**
+- ✅ Detailed multi-paragraph overview with full context
+- ✅ Technical issues broken down by root cause with specific details
+- ✅ Stakeholder mapping organized by role
+- ✅ Action items organized by timeline (Immediate, Short-Term, Long-Term) with owners
+- ✅ Process breakdown analysis and communication gaps
+- ✅ Tables for ticket/issue tracking
+- ✅ Timeline of events with timestamps
+- ✅ Specific technical details (serial numbers, configurations, error messages)
+- ✅ Customer impact assessment and frustration quotes
+- ✅ Root cause summary (technical + process)
+- ✅ Next steps prioritized
 
-**Summary format:**
+**Automatic Analysis Process:**
+1. Script analyzes up to 30KB of email content
+2. AI generates comprehensive summary (30-60 second processing time)
+3. Falls back to enhanced basic summary only if AI is unavailable
+
+**Example Detailed Summary Structure:**
 ```markdown
-# Summary
-
 ## Overview
-Brief description of what this email chain is about.
+[2-3 detailed paragraphs with customer, timeline, urgency, context]
 
-## Key Issues
-- Issue 1: Description
-- Issue 2: Description
+## Technical Issues Identified
+### Issue #1: [Specific Problem Name]
+**Problem:** [Detailed description]
+**Root Cause:** [Technical analysis]
+**Solution Required:** [Fix plan with timeline]
 
-## Action Items
-- [ ] Person to do X by date
-- [ ] Team to review Y
+### Affected Tickets Table
+| Ticket | Summary | Status | Root Cause |
 
-## Timeline
-- Date: Event or deadline
+## Process & Escalation Issues
+- Communication breakdowns identified
+- Leadership concerns documented
 
-## Important Context
-Any other relevant information.
+## Action Items & Responsibilities
+### Immediate Actions (Due: [Date])
+- [x] Completed item with owner
+- [ ] Pending item with owner and deadline
+
+## Key Stakeholders
+### Engineering Leadership
+- Name - Specific role and involvement
+
+## Root Cause Summary
+### Technical Failures
+### Process Failures  
+### Customer Impact Duration
+
+## Next Steps
+[Prioritized action list]
 ```
+
+**Enhanced Basic Summary (Fallback only):**
+If AI is unavailable, generates enhanced basic summary with:
+- Extracted ticket references
+- Key dates mentioned
+- Urgency indicators  
+- Customer/project names from subject
 
 ### When to Use
 

@@ -23,8 +23,8 @@ def parse_attendees(content):
     """
     attendee_map = {}
     
-    # Look for attendee section
-    attendee_section = re.search(r'## Attendees\n(.*?)(?=\n##|\Z)', content, re.DOTALL)
+    # Look for attendee section (handle optional whitespace)
+    attendee_section = re.search(r'## Attendees(.*?)(?=\n## |\Z)', content, re.DOTALL)
     if not attendee_section:
         return attendee_map
     
