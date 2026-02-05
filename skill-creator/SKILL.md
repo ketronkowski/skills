@@ -10,17 +10,34 @@ This skill provides guidance for creating effective skills.
 
 ## About Skills
 
-Skills are modular, self-contained packages that extend Github Copilot's capabilities by providing
-specialized knowledge, workflows, and tools. Think of them as "onboarding guides" for specific
-domains or tasks—they transform Github Copilot from a general-purpose agent into a specialized agent
-equipped with procedural knowledge that no model can fully possess.
+Skills are modular, self-contained packages that extend AI agent capabilities by providing specialized knowledge, workflows, and tools. Think of them as "onboarding guides" for specific domains or tasks—they transform a general-purpose agent into a specialized agent equipped with procedural knowledge that no model can fully possess.
+
+**Agent Skills** is an open standard originally developed by [Anthropic](https://www.anthropic.com/) and adopted by multiple agent products including GitHub Copilot, Claude Desktop, and others. Skills built to this standard are interoperable—you can create them once and use them across different skills-compatible agent harnesses.
 
 ### What Skills Provide
 
-1. Specialized workflows - Multi-step procedures for specific domains
-2. Tool integrations - Instructions for working with specific file formats or APIs
-3. Domain expertise - Company-specific knowledge, schemas, business logic
-4. Bundled resources - Scripts, references, and assets for complex and repetitive tasks
+1. **Specialized workflows** - Multi-step procedures for specific domains
+2. **Tool integrations** - Instructions for working with specific file formats or APIs
+3. **Domain expertise** - Company-specific knowledge, schemas, business logic
+4. **Bundled resources** - Scripts, references, and assets for complex and repetitive tasks
+5. **Interoperability** - Reuse the same skill across different agent products (GitHub Copilot, Claude Desktop, etc.)
+
+### Skills Directory Setup (Kevin's Environment)
+
+**IMPORTANT**: All skills should be created in `/Users/kevin/skills`, which is a git repository that serves as the central skills library.
+
+**Multi-harness setup:**
+- **Main directory**: `/Users/kevin/skills` (git repository)
+- **Symlinks**: 
+  - `~/.copilot/skills` → `/Users/kevin/skills`
+  - `~/.claude/skills` → `/Users/kevin/skills`
+
+This setup allows the same skills to be discovered and used by multiple AI agent harnesses (GitHub Copilot CLI, Claude Desktop, and potentially others). Always create new skills directly in `/Users/kevin/skills`, not in harness-specific directories like `~/.copilot/skills` or `~/.claude/skills`.
+
+**When creating or editing skills:**
+1. Work in `/Users/kevin/skills/[skill-name]/`
+2. Commit changes to git in the `/Users/kevin/skills` repository
+3. Changes automatically become available to all harnesses via symlinks
 
 ## Core Principles
 
@@ -264,17 +281,21 @@ When creating a new skill from scratch, always run the `init_skill.py` script. T
 Usage:
 
 ```bash
-scripts/init_skill.py <skill-name> --path <output-directory>
+# IMPORTANT: Always create skills in /Users/kevin/skills directory
+scripts/init_skill.py <skill-name> --path /Users/kevin/skills
+
+# Example: Creating a new skill called "my-skill"
+scripts/init_skill.py my-skill --path /Users/kevin/skills
 ```
 
 The script:
 
-- Creates the skill directory at the specified path
+- Creates the skill directory at `/Users/kevin/skills/<skill-name>`
 - Generates a SKILL.md template with proper frontmatter and TODO placeholders
 - Creates example resource directories: `scripts/`, `references/`, and `assets/`
 - Adds example files in each directory that can be customized or deleted
 
-After initialization, customize or remove the generated SKILL.md and example files as needed.
+After initialization, customize or remove the generated SKILL.md and example files as needed. The skill will automatically be available to all agent harnesses (GitHub Copilot, Claude Desktop, etc.) via the symlink setup.
 
 ### Step 4: Edit the Skill
 
@@ -319,16 +340,19 @@ Write instructions for using the skill and its bundled resources.
 
 ### Step 5: Packaging a Skill
 
-Once development of the skill is complete, it must be packaged into a distributable .skill file that gets shared with the user. The packaging process automatically validates the skill first to ensure it meets all requirements:
+Once development of the skill is complete, it can optionally be packaged into a distributable .skill file for sharing. The packaging process automatically validates the skill first to ensure it meets all requirements.
+
+**Note**: For Kevin's personal skills in `/Users/kevin/skills`, packaging is typically not necessary since skills are used directly from the git repository. Packaging is mainly useful for distributing skills to others.
 
 ```bash
-scripts/package_skill.py <path/to/skill-folder>
+# Package a skill from /Users/kevin/skills
+scripts/package_skill.py /Users/kevin/skills/<skill-name>
 ```
 
 Optional output directory specification:
 
 ```bash
-scripts/package_skill.py <path/to/skill-folder> ./dist
+scripts/package_skill.py /Users/kevin/skills/<skill-name> ./dist
 ```
 
 The packaging script will:
@@ -344,9 +368,9 @@ The packaging script will:
 
 If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
 
-### Step 6: Iterate
+### Step 6: Iterate and Version Control
 
-After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
+After testing the skill, improvements may be needed. Often this happens right after using the skill, with fresh context of how the skill performed.
 
 **Iteration workflow:**
 
@@ -354,3 +378,14 @@ After testing the skill, users may request improvements. Often this happens righ
 2. Notice struggles or inefficiencies
 3. Identify how SKILL.md or bundled resources should be updated
 4. Implement changes and test again
+5. **Commit changes to git** in `/Users/kevin/skills` repository
+
+**Git workflow for Kevin's skills:**
+```bash
+cd /Users/kevin/skills
+git add <skill-name>/
+git commit -m "description of changes"
+git push  # If pushing to remote repository
+```
+
+All skills in `/Users/kevin/skills` are version-controlled, making it easy to track changes, revert if needed, and maintain a history of skill evolution.
