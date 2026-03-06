@@ -1,6 +1,6 @@
 ---
 name: gh-glcp
-description: GitHub CLI best practices for GLCP organization. **REQUIRED** Use when accessing GitHub resources (workflows, PRs, issues, commits) in the glcp organization. Always prefer `gh` CLI over GitHub MCP server tools for glcp org to avoid 404 errors and access issues.
+description: GitHub CLI best practices for GLCP organization. **REQUIRED** Use when accessing any GitHub resources (workflows, PRs, issues, commits, code search) in the glcp organization. Always prefer `gh` CLI over GitHub MCP server tools for glcp org to avoid 404 errors and access issues. Invoke this skill before running any GitHub operations against glcp repos.
 ---
 
 # GitHub CLI for GLCP Organization
@@ -73,6 +73,23 @@ gh issue list --repo glcp/<repo-name> --limit 10
 **View commit details:**
 ```bash
 gh api repos/glcp/<repo-name>/commits/<sha>
+```
+
+**List recent commits on a branch:**
+```bash
+gh api "repos/glcp/<repo-name>/commits?sha=<branch>&per_page=10"
+```
+
+**Compare two commits or branches:**
+```bash
+gh api repos/glcp/<repo-name>/compare/<base>...<head>
+```
+
+### Code Search
+
+**Search code in a specific repo:**
+```bash
+gh api search/code --method GET -f q="<search-term> repo:glcp/<repo-name>"
 ```
 
 ## Best Practices

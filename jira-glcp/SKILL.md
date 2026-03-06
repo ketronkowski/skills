@@ -5,15 +5,17 @@ description: Work with Jira and Atlassian for the GLCP project using Atlassian M
 
 # Jira GLCP
 
-## ⚠️ CRITICAL: Tool Usage
+## Tool Usage: MCP Server Functions, Not CLI
 
-**ALWAYS use Atlassian MCP server FUNCTION TOOLS for all Jira operations.**
+All Jira operations should use the Atlassian MCP server **function tools** — not bash commands or CLI tools. This matters because:
+- MCP tools authenticate automatically via your Atlassian session
+- They return structured data that's easier to work with
+- CLI tools like `acli` can be inconsistent or unavailable
 
-These are **function calls**, NOT bash/CLI commands:
-- ✅ Invoke them directly as tools (e.g., `Atlassian-searchJiraIssuesUsingJql`)
-- ❌ DO NOT run them as bash commands (e.g., `bash: acli jira ...`)
-- ❌ DO NOT use `mcp__atlassian` as a CLI command
-- ❌ DO NOT fall back to `acli` or other CLI tools
+**Correct approach:**
+- ✅ Invoke `Atlassian-searchJiraIssuesUsingJql` directly as a tool call
+- ❌ Do not run `bash: acli jira ...`
+- ❌ Do not run `bash: mcp__atlassian ...`
 
 See [examples/tool-invocation-examples.md](examples/tool-invocation-examples.md) for detailed usage examples.
 
@@ -90,4 +92,4 @@ All available Atlassian MCP tools (invoke as function calls):
 - **Atlassian-lookupJiraAccountId** - Find users by name/email
 - **Atlassian-atlassianUserInfo** - Get current user info
 
-**Remember**: Always use `cloudId: "b26ad273-0621-4dd6-8915-78cfbe11048e"` for GLCP project.
+**Remember**: Always use `cloudId: "b26ad273-0621-4dd6-8915-78cfbe11048e"` for all GLCP Jira operations.

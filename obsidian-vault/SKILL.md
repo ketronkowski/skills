@@ -1,6 +1,6 @@
 ---
 name: obsidian-vault
-description: Context for Kevin's Obsidian vault structure, organization, and search strategies. Use for Obsidian notes, meetings, people profiles, and SIC docs.
+description: Context for Kevin's Obsidian vault structure, organization, and search strategies. Use whenever working with Obsidian notes — searching for past meetings, finding what was decided about a topic, looking up a colleague, navigating daily notes, creating new meeting notes or people profiles, or any question about the HPE vault. Invoke this skill before searching the vault so you use the correct paths, naming conventions, and search strategies rather than guessing.
 ---
 
 # Obsidian Vault Context Skill

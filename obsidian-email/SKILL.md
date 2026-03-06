@@ -118,29 +118,20 @@ Replace empty `# Participants` section with linked list:
 - Listed in order of first appearance in email chain
 - One participant per line with bullet point
 
-### Step 4: Generate Detailed AI Summary (Automatic)
+### Step 4: Generate Detailed Summary
 
-The script **automatically generates comprehensive, detailed summaries** using AI analysis:
+Analyze the full email chain and create a comprehensive summary. A good email summary includes:
+- Multi-paragraph overview with customer, timeline, and urgency
+- Technical issues broken down by root cause
+- Stakeholder mapping organized by role
+- Action items organized by timeline (Immediate, Short-Term, Long-Term) with owners
+- Tables for ticket/issue tracking when applicable
+- Timeline of key events
+- Root cause summary (technical + process)
+- Next steps, prioritized
 
-**Detailed AI Summary includes:**
-- ✅ Detailed multi-paragraph overview with full context
-- ✅ Technical issues broken down by root cause with specific details
-- ✅ Stakeholder mapping organized by role
-- ✅ Action items organized by timeline (Immediate, Short-Term, Long-Term) with owners
-- ✅ Process breakdown analysis and communication gaps
-- ✅ Tables for ticket/issue tracking
-- ✅ Timeline of events with timestamps
-- ✅ Specific technical details (serial numbers, configurations, error messages)
-- ✅ Customer impact assessment and frustration quotes
-- ✅ Root cause summary (technical + process)
-- ✅ Next steps prioritized
+**Summary structure:**
 
-**Automatic Analysis Process:**
-1. Script analyzes up to 30KB of email content
-2. AI generates comprehensive summary (30-60 second processing time)
-3. Falls back to enhanced basic summary only if AI is unavailable
-
-**Example Detailed Summary Structure:**
 ```markdown
 ## Overview
 [2-3 detailed paragraphs with customer, timeline, urgency, context]
@@ -176,46 +167,15 @@ The script **automatically generates comprehensive, detailed summaries** using A
 [Prioritized action list]
 ```
 
-**Enhanced Basic Summary (Fallback only):**
-If AI is unavailable, generates enhanced basic summary with:
-- Extracted ticket references
-- Key dates mentioned
-- Urgency indicators  
-- Customer/project names from subject
-
-### When to Use
-
-- User requests "process email", "extract participants", or "summarize email"
-- Note file contains `# Email Chain` section with email content
-- After creating note from copied email thread
-
 ## Script Usage
 
+The processing steps above can also be run via the bundled script, which handles all four steps automatically:
+
 ```bash
-# Process email chain note
-python ~/.copilot/skills/obsidian-email/scripts/process_email.py "email-note-file.md"
+python ~/.copilot/skills/obsidian-email/scripts/process_email.py "path/to/email-note.md"
 ```
 
-**The script automatically:**
-1. Parses email headers to extract unique senders
-2. Creates missing People profiles with email addresses
-3. Updates Participants section with linked names
-4. Generates comprehensive summary from email content
-5. Updates Summary section in the note
-
-**Example output:**
-```
-✓ Extracted 5 unique participants
-  - Vobbilisetty, Suresh (suresh.vobbilisetty@hpe.com)
-  - Sadananda, Ravi Kiran Srirangam (ravikiransrirangam.sadananda@hpe.com)
-  - Daniel, Binu (binu.daniel@hpe.com)
-  - Vanteru, Bhanu (bhanu.vanteru@hpe.com)
-  - Yun, Stella (xiaoyang.yun@hpe.com)
-✓ Created 2 new People profiles
-✓ Updated Participants section
-✓ Generated summary (4 sections)
-✓ Updated email note
-```
+Use this when you want a quick automated run. For more control over individual steps (e.g., only extracting participants without generating a summary), follow the manual workflow above.
 
 ## Email Header Formats
 
@@ -269,19 +229,6 @@ The script maintains consistency with existing People profiles:
 2. **Add email to Contact section** if profile exists but email missing
 3. **Use same formatting** as obsidian-meeting skill for consistency
 4. **Create aliases section** for proper Obsidian linking
-
-## Example Workflow
-
-```bash
-# 1. Find the email note
-find ~/Documents/Obsidian/HPE/Notes -iname "*ops*ramp*email*.md"
-
-# 2. Process it
-python ~/.copilot/skills/obsidian-email/scripts/process_email.py \
-  "~/Documents/Obsidian/HPE/Notes/2026-01-23 - Ops Ramp Issues Email.md"
-
-# Output shows progress and results
-```
 
 ## Common Issues
 

@@ -32,7 +32,19 @@ gh pr list --state merged --author @me --head $(git branch --show-current)
 
 Offer to reuse the JIRA ID from the most recent merged PR on this branch.
 
-### 3. Query Open JIRA Work Items
+### 3. Push Branch (if needed)
+
+Ensure the current branch is pushed to origin before creating the PR:
+
+```bash
+# Check if branch has a remote tracking branch
+git status -sb
+
+# Push if not yet pushed (set upstream on first push)
+git push -u origin $(git branch --show-current)
+```
+
+### 4. Query Open JIRA Work Items
 
 Check open work items in the current Green Team sprint:
 
@@ -46,7 +58,7 @@ acli jira sprint list-workitems --sprint $SPRINT_ID --board 214 --jql "assignee 
 
 Present these as JIRA ID options to the user.
 
-### 4. Prompt for Title Format
+### 5. Prompt for Title Format
 
 Offer two title format options:
 
@@ -58,7 +70,7 @@ Offer two title format options:
 - Valid prefixes: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `test`, `perf`, `ci`, `build`
 - Example: `feat: add new API endpoint`
 
-### 5. Format PR Title and Description
+### 6. Format PR Title and Description
 
 #### JIRA ID Format
 
@@ -78,6 +90,23 @@ Jira: https://hpe.atlassian.net/browse/GLCP-313119
 - Example: `feat: add new API endpoint`
 
 **Description**: Standard PR description without JIRA link
+
+### 7. Create or Update the PR
+
+**Create a new PR:**
+```bash
+gh pr create \
+  --title "{title}" \
+  --body "{description}" \
+  --base main
+```
+
+**Update an existing open PR:**
+```bash
+gh pr edit <number> \
+  --title "{title}" \
+  --body "{description}"
+```
 
 ## Commit Message Format
 

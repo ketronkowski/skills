@@ -1,31 +1,28 @@
 ---
 name: obsidian-meeting-standup
-description: Process standup meeting notes (Green/Magenta) with automatic JIRA population. **Use when** router delegates standup meeting processing. **AUTOMATICALLY** populates JIRA section if empty (no asking, no exceptions), then handles pre/post-meeting workflows. **CRITICAL:** JIRA auto-population runs first, always, for all standups.
+description: Process standup meeting notes (Green/Magenta) with automatic JIRA population. **Use when** user asks to process a standup, "process Green Standup", "process Magenta Standup", or when obsidian-meeting-router delegates standup processing. Automatically populates JIRA section and handles both pre-meeting and post-meeting workflows.
 ---
 
 # Obsidian Standup Meeting Processor
 
-**🔴 CRITICAL: Read this entire section before processing ANY standup meeting 🔴**
+Populate JIRA sprint items, extract attendees, clean transcripts, and generate summaries for Green and Magenta standup meetings.
 
-## 🚨 ABSOLUTE RULE - JIRA AUTO-POPULATION 🚨
+> **Read this section fully before starting.** The JIRA auto-population behavior is the most important thing to get right.
 
-**WHEN PROCESSING ANY STANDUP MEETING (Green or Magenta):**
+## JIRA Auto-Population: Always First
 
-```
-STEP 1: Read the meeting file
-STEP 2: Check if ## JIRA section is empty
-STEP 3: If empty → IMMEDIATELY populate it with sprint issues (NO ASKING, NO EXCEPTIONS)
-STEP 4: Then continue with appropriate workflow (pre-meeting or post-meeting)
-```
+The most important rule for standup processing: **always populate the JIRA section automatically, without asking.**
 
-**DO NOT:**
-- Ask permission to populate JIRA
-- Ask which mode to use
-- Skip JIRA population
-- Wait for explicit "pre-meeting" instruction
-- Make excuses about why you can't do it
+Here's why: the whole point of the pre-meeting standup workflow is to arrive with the JIRA section already filled in, ready to discuss. If you ask for permission or skip this step, the entire value of the pre-meeting workflow is lost. The user has set this up to be automatic precisely because they don't want to be interrupted with confirmations.
 
-**THIS IS NON-NEGOTIABLE. THIS MUST HAPPEN AUTOMATICALLY.**
+**The sequence is always:**
+
+1. Read the meeting file
+2. Check if `## JIRA` section is empty
+3. If empty → query and populate sprint issues immediately (no confirmation needed)
+4. Then continue with the appropriate workflow (pre-meeting or post-meeting)
+
+This applies to every standup, every time, regardless of what else is in the file.
 
 ## Team Detection
 
@@ -244,18 +241,20 @@ find ~/Documents/Obsidian/HPE/Meetings -name "$(date +%Y-%m-%d)*Magenta Standup*
 find ~/Documents/Obsidian/HPE/Meetings -name "2026-01-28*Standup*.md"
 ```
 
-## Common Failure Modes (AVOID THESE)
+## Common Failure Modes (Avoid These)
 
-❌ **Asking for permission** to populate JIRA
-❌ **Skipping JIRA** population entirely
-❌ **Not detecting** standup meetings correctly
-❌ **Not checking** if JIRA section is empty
-❌ **Stopping halfway** through workflow
+These are patterns that break the standup workflow:
 
-✅ **Always check** JIRA section for standups
-✅ **Always populate** if empty
-✅ **Never ask** for permission
-✅ **Complete** all workflow steps
+- Asking for permission to populate JIRA (just do it)
+- Skipping JIRA population because the file looks complete in other ways
+- Not detecting standup meetings correctly (check filename, not just content)
+- Not checking whether the JIRA section is actually empty
+- Stopping halfway through the workflow
+
+The right approach:
+- Check the JIRA section first, populate if empty
+- Detect pre vs. post-meeting from file state
+- Complete all workflow steps without prompting
 
 ## Example Workflows
 
@@ -299,16 +298,13 @@ find ~/Documents/Obsidian/HPE/Meetings -name "2026-01-28*Standup*.md"
 ## Success Criteria
 
 After processing, verify:
-- [ ] ## JIRA section is populated
+- [ ] ## JIRA section is populated (populated automatically, not on request)
 - [ ] Issues grouped by assignee with Obsidian links
 - [ ] All JIRA IDs have full URLs
 - [ ] JIRA items mentioned in meeting have update comments
 - [ ] ## Attendees populated (expected or actual)
 - [ ] Transcript cleaned if present
 - [ ] Summary generated if no Copilot Summary
-- [ ] All happened WITHOUT asking user for permission
-
-**If any criteria is false, the workflow was not completed correctly.**
 
 ## Additional Resources
 

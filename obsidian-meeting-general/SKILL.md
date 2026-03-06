@@ -1,6 +1,6 @@
 ---
 name: obsidian-meeting-general
-description: Process general (non-standup) Obsidian meeting notes. **Use when** router delegates non-standup meeting processing. Handles attendee extraction from screenshots, People profile creation, transcript cleaning (4 format variants), Microsoft Copilot Summary detection, and meeting summary generation.
+description: Process general (non-standup) Obsidian meeting notes. **Use when** user asks to process a meeting, process today's meeting, or when the obsidian-meeting-router delegates non-standup meeting processing. Handles attendee extraction from screenshots, People profile creation, transcript cleaning (4 format variants), Microsoft Copilot Summary detection, and meeting summary generation.
 ---
 
 # Obsidian General Meeting Processor

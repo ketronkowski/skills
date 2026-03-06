@@ -14,8 +14,11 @@ When user says "process meeting", "process the obsidian meeting", or similar:
 First, determine which meeting file to process:
 
 ```bash
-# If user specified date (e.g., "today", "yesterday", specific date)
-find ~/Documents/Obsidian/HPE/Meetings -name "YYYY-MM-DD*.md"
+# Default: today's meetings
+find ~/Documents/Obsidian/HPE/Meetings -name "$(date +%Y-%m-%d)*.md"
+
+# If user specified a specific date (e.g., "yesterday", "2026-01-28")
+find ~/Documents/Obsidian/HPE/Meetings -name "2026-01-28*.md"
 
 # If user specified meeting name
 find ~/Documents/Obsidian/HPE/Meetings -iname "*meeting-name*.md"

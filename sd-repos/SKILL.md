@@ -78,7 +78,7 @@ For the complete repository list with descriptions, see [repository-catalog.md](
 
 ## Management Scripts
 
-Located in `/Users/kevin/git/glcp/sd/`:
+Located in the local SD directory `/Users/kevin/git/glcp/sd/` (not in this skill):
 - `create_*_prs.sh` - PR creation automation
 - `update_*.sh` - Repository update scripts
 - `check_*.sh` - Verification scripts

@@ -1,6 +1,6 @@
 ---
 name: obsidian-daily-summary
-description: Generate daily summaries for Obsidian daily notes. **Use when** user asks to "create a daily summary", "summarize today", "generate daily summary", or "summarize this day". Aggregates content from meetings, notes, and conversations associated with a specific day to create a comprehensive summary in the daily note.
+description: Generate daily summaries for Obsidian daily notes. **Use when** user asks to "create a daily summary", "summarize today", "generate daily summary", "summarize this day", "wrap up today", "end of day summary", or "what happened today". Aggregates content from meetings, notes, and conversations associated with a specific day to create a comprehensive summary in the daily note.
 ---
 
 # Obsidian Daily Summary Generator
@@ -113,3 +113,11 @@ Insert or update the `## Daily Summary` section in the daily note:
 - Highlight actionable items with clear ownership
 - Keep bullets concise and scannable
 - Include context that would be valuable when reviewing this day later
+
+## Handling Days with Little Content
+
+If there are no meetings, no notes, or very sparse "Short Conversations and Notes":
+- Still generate the summary section, even if brief
+- Note what was absent ("No meetings today") when appropriate
+- Capture anything meaningful from the "Short Conversations and Notes" section
+- A short summary is more useful than an empty section
